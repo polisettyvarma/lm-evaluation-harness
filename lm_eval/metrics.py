@@ -5,6 +5,7 @@ import numpy as np
 import sacrebleu
 import sklearn.metrics
 import random
+import os
 
 
 def mean(arr):
@@ -206,8 +207,15 @@ class _bootstrap_internal:
 
 def bootstrap_stderr(f, xs, iters):
     import multiprocessing as mp
+    spawn_context = mp.get_context("spawn")
 
-    pool = mp.Pool(mp.cpu_count())
+    pool_size = spawn_context.cpu_count() // 2
+    physical_cpu_count = pool_size
+    world_size = int(os.getenv("WORLD_SIZE", 1))
+    pool_size //= world_size
+    if (pool_size * world_size) != physical_cpu_count:
+        pool_size -= 1
+    pool = spawn_context.Pool(pool_size)
     # this gives a biased estimate of the stderr (i.e w/ the mean, it gives something
     # equivalent to stderr calculated without Bessel's correction in the stddev.
     # Unfortunately, I haven't been able to figure out what the right correction is
