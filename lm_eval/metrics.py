@@ -6,6 +6,7 @@ import sacrebleu
 import sklearn.metrics
 import random
 import os
+import psutil
 
 
 def mean(arr):
