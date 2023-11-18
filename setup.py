@@ -33,6 +33,7 @@ setuptools.setup(
         "openai>=0.6.4",
         "omegaconf>=2.2",
         "peft>=0.2.0",
+        "psutil",
         "pybind11>=2.6.2",
         "pycountry",
         "pytablewriter",

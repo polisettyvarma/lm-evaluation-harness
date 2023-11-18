@@ -209,8 +209,8 @@ def bootstrap_stderr(f, xs, iters):
     import multiprocessing as mp
     spawn_context = mp.get_context("spawn")
 
-    pool_size = spawn_context.cpu_count() // 2
-    physical_cpu_count = pool_size
+    physical_cpu_count = psutil.cpu_count(logical=False)
+    pool_size = physical_cpu_count
     world_size = int(os.getenv("WORLD_SIZE", 1))
     pool_size //= world_size
     if (pool_size * world_size) != physical_cpu_count:
