@@ -213,6 +213,8 @@ def bootstrap_stderr(f, xs, iters):
     physical_cpu_count = psutil.cpu_count(logical=False)
     pool_size = physical_cpu_count
     world_size = int(os.getenv("WORLD_SIZE", 1))
+    if world_size == 0:
+        world_size = 1
     pool_size //= world_size
     if (pool_size * world_size) != physical_cpu_count:
         pool_size -= 1
